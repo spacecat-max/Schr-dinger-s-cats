@@ -1,0 +1,56 @@
+﻿/**************************************************************************
+* Copyright (C) echoAR, Inc. 2018-2020.                                   *
+* echoAR, Inc. proprietary and confidential.                              *
+*                                                                         *
+* Use subject to the terms of the Terms of Service available at           *
+* https://www.echoar.xyz/terms, or another agreement                      *
+* between echoAR, Inc. and you, your company or other organization.       *
+***************************************************************************/
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CustomBehaviour : MonoBehaviour
+{
+    [HideInInspector]
+    public Entry entry;
+
+    /// <summary>
+    /// EXAMPLE BEHAVIOUR
+    /// Queries the database and names the object based on the result.
+    /// </summary>
+
+    // Use this for initialization
+    void Start()
+    {
+        // Add RemoteTransformations script to object and set its entry
+        this.gameObject.AddComponent<RemoteTransformations>().entry = entry;
+
+        // Qurey additional data to get the name
+        string value = "";
+        if (entry.getAdditionalData() != null && entry.getAdditionalData().TryGetValue("name", out value))
+        {
+            // Set name
+            this.gameObject.name = value;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(0)||(Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)) //touch screen
+        {
+            int num = Random.Range(0, 2); //chooses numbers between 0 and 1
+            Debug.Log(num);
+            if(num == 0)
+            {
+                Instantiate(gameObject);
+            }
+            if(num == 1)
+            {
+                Destroy(gameObject);
+            }
+        }
+        
+    }
+}
